@@ -8,9 +8,6 @@ const ForgetPassword = ({navigation}: {navigation: any}) => {
   return (
     <View>
       <Text>ForgetPassword</Text>
-      <TouchableOpacity onPress={loginHandler}>
-        <Text>Login</Text>
-      </TouchableOpacity>
     </View>
   );
 };
