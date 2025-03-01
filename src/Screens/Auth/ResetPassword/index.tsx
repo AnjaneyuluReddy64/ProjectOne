@@ -11,41 +11,45 @@ import {
 } from 'react-native-responsive-screen';
 import React, {useState} from 'react';
 
-const ForgetPassword = ({navigation}: {navigation: any}) => {
+const ResetPassword = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState('');
+  const [password, setpassword] = useState('');
 
   const onLoginHandler = () => {
-    navigation.navigate('EnterOtp');
+    navigation.navigate('Home');
   };
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.titleText}>Forgot password?</Text>
-        <Text style={styles.paraText}>
-          Dont worry! It Happens. Please enter the email address associated with
-          your accoount
-        </Text>
+        <Text style={styles.titleText}>Reset password</Text>
       </View>
 
       <View>
-        <Text style={styles.label}>Email</Text>
-
+        <Text style={styles.label}>New password</Text>
         <TextInput
           style={styles.input}
           value={username}
           onChangeText={setUsername}
-          placeholder="Enter Email"
+          placeholder="**********"
         />
+        <Text style={styles.label}>Confirm password</Text>
 
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={setpassword}
+          placeholder="**********"
+          secureTextEntry
+        />
         <TouchableOpacity style={styles.button} onPress={onLoginHandler}>
-          <Text style={styles.buttonText}>Get OTP</Text>
+          <Text style={styles.buttonText}>Confirm</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default ForgetPassword;
+export default ResetPassword;
 
 const styles = StyleSheet.create({
   container: {
@@ -66,6 +70,7 @@ const styles = StyleSheet.create({
     color: '#00C7FE',
     fontSize: 18,
     marginBottom: 8,
+    textAlign: 'center',
   },
   input: {
     borderWidth: 1,

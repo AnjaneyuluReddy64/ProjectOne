@@ -10,42 +10,43 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import React, {useState} from 'react';
+import OtpComponent from '../OtpComponent';
 
-const ForgetPassword = ({navigation}: {navigation: any}) => {
+const EnterOtp = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState('');
 
   const onLoginHandler = () => {
-    navigation.navigate('EnterOtp');
+    navigation.navigate('ResetPassword');
   };
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.titleText}>Forgot password?</Text>
+        <Text style={styles.titleText}>Enter OTP</Text>
         <Text style={styles.paraText}>
-          Dont worry! It Happens. Please enter the email address associated with
-          your accoount
+          4 digit verification code has been sent on your registered email
+          address
         </Text>
       </View>
 
       <View>
-        <Text style={styles.label}>Email</Text>
-
-        <TextInput
-          style={styles.input}
-          value={username}
-          onChangeText={setUsername}
-          placeholder="Enter Email"
-        />
+        <OtpComponent />
 
         <TouchableOpacity style={styles.button} onPress={onLoginHandler}>
-          <Text style={styles.buttonText}>Get OTP</Text>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.bottomText}>
+        <TouchableOpacity>
+          <Text style={{color: '#00C7FE', textAlign: 'center'}}>
+            Didn't receive otp? Resend again
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default ForgetPassword;
+export default EnterOtp;
 
 const styles = StyleSheet.create({
   container: {
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
   label: {
     color: '#00C7FE',
     fontSize: 18,
+    textAlign: 'center',
     marginBottom: 8,
   },
   input: {
