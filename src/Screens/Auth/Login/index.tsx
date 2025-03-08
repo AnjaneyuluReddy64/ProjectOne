@@ -10,11 +10,50 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {COLORS} from '../../../Utils/Colors';
+import {useLazyAuthUsersQuery} from '../../../APIServices/hostApiServices';
 
 const Login = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState('');
   const [password, setpassword] = useState('');
+  const [getUsersAPI, usersData] = useLazyAuthUsersQuery();
+
+  const onLoginHandler = async () => {
+    if (!username.trim()) {
+      Alert.alert('Enter email');
+    } else if (!password.trim()) {
+      Alert.alert('Enter password');
+    } else {
+      try {
+        const response = await getUsersAPI({}).unwrap();
+
+        const isValidUser = response.some(
+          user => user.gmail === username && user.password === password,
+        );
+        const currentUser = response.find(
+          user => user.gmail === username && user.password === password,
+        );
+        // console.log('Login Success------>', isValidUser);
+
+        if (isValidUser) {
+          const userData = usersData;
+          navigation?.navigate('Home', {
+            username: username || 'defaultUsername',
+            password: password || 'defaultPassword',
+            userData: currentUser || 'Nouser',
+            // userData: userData.find(user => user.gmail === username) || {},
+          });
+          // setUsername('');
+          // setpassword('');
+        } else {
+          Alert.alert('User Notfound');
+        }
+      } catch (err) {
+        Alert.alert('Login Error', 'Unable to login. Please try again later.');
+      }
+    }
+  };
 
   const signupHandler = () => {
     navigation.navigate('SignUp');
@@ -23,27 +62,17 @@ const Login = ({navigation}: {navigation: any}) => {
     navigation.navigate('ForgetPassword');
   };
 
-  const onLoginHandler = () => {
-    if (!username.trim()) {
-      Alert.alert('Enter email');
-    } else if (!password.trim()) {
-      Alert.alert('Enter password');
-    } else {
-      navigation.navigate('Home');
-      console.log('userName=====>', username);
-      console.log('password=====>', password);
-    }
-  };
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.titleContainer}>
         <Text style={[styles.titleText, {fontSize: hp('2%')}]}>Login</Text>
-        <Text style={styles.paraText}>We are happy to see you again.</Text>
-        <Text style={styles.paraText}>Login to continue</Text>
+        <Text style={styles.paraText}>
+          We are happy to see you again. Login to continue
+        </Text>
       </View>
 
       <View>
-        <Text style={styles.label}>Email</Text>
+        <Text style={styles.label}>EMAIL ID</Text>
 
         <TextInput
           style={styles.input}
@@ -51,7 +80,7 @@ const Login = ({navigation}: {navigation: any}) => {
           onChangeText={setUsername}
           placeholder="Enter Email"
         />
-        <Text style={styles.label}>Password</Text>
+        <Text style={styles.label}>PASSWORD</Text>
 
         <TextInput
           style={styles.input}
@@ -64,10 +93,14 @@ const Login = ({navigation}: {navigation: any}) => {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.bottomText}>
-        <TouchableOpacity onPress={signupHandler}>
-          <Text style={{color: '#00C7FE', textAlign: 'center'}}>Signup</Text>
-        </TouchableOpacity>
+
+      <View>
+        <View style={styles.bottomText}>
+          <TouchableOpacity onPress={signupHandler}>
+            <Text style={{color: '#00C7FE', textAlign: 'center'}}>Signup</Text>
+          </TouchableOpacity>
+        </View>
+
         <TouchableOpacity onPress={forgetHandler}>
           <Text style={{color: '#00C7FE', textAlign: 'center'}}>
             Forgot Password?
@@ -84,38 +117,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 16,
+    padding: hp('2.3%'),
+  },
+  titleContainer: {
+    alignItems: 'center',
   },
   titleText: {
-    textAlign: 'center',
     fontSize: hp('4'),
     fontWeight: 'bold',
-    color: '#00223E',
+    color: COLORS.DarkMidnightBlue,
   },
   paraText: {
+    marginVertical: hp('2%'),
     textAlign: 'center',
+    width: wp('55%'),
   },
   label: {
-    color: '#00C7FE',
-    fontSize: 18,
-    marginBottom: 8,
+    color: COLORS.VividSkyBlue,
+    fontSize: hp('2%'),
+    marginBottom: hp('1%'),
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 8,
-    marginBottom: 16,
+    borderWidth: hp('0.1%'),
+    borderColor: '#00223E',
+    borderRadius: hp('1%'),
+    height: hp('5%'),
+    marginBottom: hp('3%'),
+    paddingLeft: hp('2%'),
   },
   button: {
-    backgroundColor: '#00223E',
+    backgroundColor: COLORS.DarkMidnightBlue,
     color: 'white',
     textAlign: 'center',
-    borderRadius: hp('1.5'),
+    borderRadius: hp('1%'),
+    height: hp('5%'),
+    marginBottom: hp('3%'),
   },
   buttonText: {
     color: 'white',
     textAlign: 'center',
-    padding: 11,
+    padding: hp('1.5%'),
   },
-  bottomText: {paddingTop: 2},
+  bottomText: {paddingBottom: hp('2%')},
 });

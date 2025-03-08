@@ -11,6 +11,7 @@ import {
 } from 'react-native-responsive-screen';
 import React, {useState} from 'react';
 import OtpComponent from '../OtpComponent';
+import {COLORS} from '../../../Utils/Colors';
 
 const EnterOtp = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState('');
@@ -20,7 +21,7 @@ const EnterOtp = ({navigation}: {navigation: any}) => {
   };
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.titleCard}>
         <Text style={styles.titleText}>Enter OTP</Text>
         <Text style={styles.paraText}>
           4 digit verification code has been sent on your registered email
@@ -35,7 +36,7 @@ const EnterOtp = ({navigation}: {navigation: any}) => {
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.bottomText}>
+      <View style={styles.buttonText}>
         <TouchableOpacity>
           <Text style={{color: '#00C7FE', textAlign: 'center'}}>
             Didn't receive otp? Resend again
@@ -52,39 +53,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 16,
+    padding: hp('2%'),
   },
+  titleCard: {alignItems: 'center', marginVertical: wp('5%')},
   titleText: {
-    textAlign: 'center',
     fontSize: hp('4'),
     fontWeight: 'bold',
-    color: '#00223E',
+    color: COLORS.DarkMidnightBlue,
   },
-  paraText: {
-    textAlign: 'center',
-  },
-  label: {
-    color: '#00C7FE',
-    fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 8,
-    marginBottom: 16,
-  },
+  paraText: {textAlign: 'center', width: wp('60%')},
+
   button: {
-    backgroundColor: '#00223E',
+    backgroundColor: COLORS.DarkMidnightBlue,
     color: 'white',
     textAlign: 'center',
-    borderRadius: hp('1.5'),
+    borderRadius: hp('1%'),
+    height: hp('5%'),
+    marginBottom: hp('3%'),
   },
   buttonText: {
     color: 'white',
     textAlign: 'center',
-    padding: 11,
+    padding: hp('1.5%'),
   },
-  bottomText: {paddingTop: 2},
 });

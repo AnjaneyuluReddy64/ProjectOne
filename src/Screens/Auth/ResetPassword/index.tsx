@@ -20,7 +20,7 @@ const ResetPassword = ({navigation}: {navigation: any}) => {
   };
   return (
     <View style={styles.container}>
-      <View>
+      <View style={{marginVertical: wp('10%')}}>
         <Text style={styles.titleText}>Reset password</Text>
       </View>
 
@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 16,
+    padding: hp('2.2%'),
   },
   titleText: {
     textAlign: 'center',
-    fontSize: hp('4'),
+    fontSize: hp('3'),
     fontWeight: 'bold',
     color: '#00223E',
   },
@@ -70,13 +70,14 @@ const styles = StyleSheet.create({
     color: '#00C7FE',
     fontSize: 18,
     marginBottom: 8,
-    textAlign: 'center',
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 8,
-    marginBottom: 16,
+    borderWidth: hp('0.1%'),
+    borderColor: '#00223E',
+    borderRadius: hp('1%'),
+    height: hp('5%'),
+    marginBottom: hp('3%'),
+    paddingLeft: hp('2%'),
   },
   button: {
     backgroundColor: '#00223E',

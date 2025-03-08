@@ -1,6 +1,9 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
-
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 const OTPInput = ({onComplete}) => {
   const length = 4;
   const [otp, setOtp] = useState(new Array(length).fill(''));
@@ -67,6 +70,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
+    borderRadius: hp('1%'),
     borderColor: '#000',
     padding: 10,
     margin: 5,
