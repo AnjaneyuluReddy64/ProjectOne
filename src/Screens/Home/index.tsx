@@ -6,6 +6,7 @@ import {
 } from 'react-native-responsive-screen';
 import {useLazyAuthUsersQuery} from '../../APIServices/hostApiServices';
 import {COLORS} from '../../Utils/Colors';
+import CommonHeader from '../../Components/CommonHeader';
 
 const Home = ({route, navigation}: {route: any; navigation: any}) => {
   const {userData, username, password} = route.params;
@@ -35,10 +36,14 @@ const Home = ({route, navigation}: {route: any; navigation: any}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.textLogo}>Home</Text>
-      <TouchableOpacity style={styles.button} onPress={signupHandler}>
-        <Text style={styles.buttonText}>Profile</Text>
-      </TouchableOpacity>
+      <CommonHeader title={'Home'} disableBack />
+
+      <View style={styles.bodyContainer}>
+        <Text style={styles.textLogo}>Home</Text>
+        <TouchableOpacity style={styles.button} onPress={signupHandler}>
+          <Text style={styles.buttonText}>Profile</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -46,7 +51,13 @@ const Home = ({route, navigation}: {route: any; navigation: any}) => {
 export default Home;
 
 const styles = StyleSheet.create({
-  container: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  container: {flex: 1},
+  bodyContainer: {
+    flex: 1,
+    marginHorizontal: hp('1.8%'),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   textLogo: {color: '#00223E', fontSize: hp('4%')},
   button: {
     backgroundColor: COLORS.DarkMidnightBlue,

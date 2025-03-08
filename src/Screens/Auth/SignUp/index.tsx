@@ -43,7 +43,7 @@ const SignUp = ({navigation}: {navigation: any}) => {
       const response = await postRequestToUpdateInfo(formData).unwrap();
 
       if (response) {
-        console.log('successfull Response:---', response);
+        // console.log('successfull Response:---', response);
         setName('');
         setMobile('');
         setUsername('');

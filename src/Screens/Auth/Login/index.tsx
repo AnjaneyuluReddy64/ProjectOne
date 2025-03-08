@@ -28,19 +28,22 @@ const Login = ({navigation}: {navigation: any}) => {
       try {
         const response = await getUsersAPI({}).unwrap();
 
-        const isValidUser = response.some(
-          user => user.gmail === username && user.password === password,
-        );
-        const currentUser = response.find(
-          user => user.gmail === username && user.password === password,
-        );
-        // console.log('Login Success------>', isValidUser);
+        // const isValidUser = response?.some(
+        //   (user: any) =>
+        //     user?.gmail === username && user?.password === password,
+        // );
 
-        if (isValidUser) {
+        const currentUser = response?.find(
+          (user: any) =>
+            user?.gmail === username && user?.password === password,
+        );
+
+        if (currentUser) {
+          //isValidUser
           const userData = usersData;
           navigation?.navigate('Home', {
-            username: username || 'defaultUsername',
-            password: password || 'defaultPassword',
+            // username: username || 'defaultUsername',
+            // password: password || 'defaultPassword',
             userData: currentUser || 'Nouser',
             // userData: userData.find(user => user.gmail === username) || {},
           });
