@@ -3,6 +3,7 @@ import Routes from './src/Routes';
 import {Provider} from 'react-redux';
 import {configureStore} from '@reduxjs/toolkit';
 import {hostApiServices} from './src/APIServices/hostApiServices';
+import {FontProvider, ThemeProvider} from './src/Utils/Globals';
 
 const store = configureStore({
   reducer: {
@@ -15,7 +16,11 @@ const store = configureStore({
 const App = () => {
   return (
     <Provider store={store}>
-      <Routes />
+      <ThemeProvider>
+        <FontProvider>
+          <Routes />
+        </FontProvider>
+      </ThemeProvider>
     </Provider>
   );
 };
