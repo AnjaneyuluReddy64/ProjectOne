@@ -19,7 +19,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import IconI from 'react-native-vector-icons/Ionicons';
+// import IconI from 'react-native-vector-icons/Ionicons';
 
 export const InputField = ({
   headerString,
@@ -150,7 +150,8 @@ export const InputField = ({
             onPress={() => {
               setInputValue?.('');
             }}>
-            <IconI name="close" size={hp('2.5%')} color={COLORS.AzureBlue} />
+            {/* <IconI name="close" size={hp('2.5%')} color={COLORS.AzureBlue} /> */}
+            <Text>Close</Text>
           </TouchableOpacity>
         )}
       </View>

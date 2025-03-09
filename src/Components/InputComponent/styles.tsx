@@ -8,7 +8,7 @@ import {COLORS} from '../../Utils/Colors';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     paddingRight: wp('3%'),
   },
   maxWidth: {

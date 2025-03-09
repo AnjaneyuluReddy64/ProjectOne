@@ -50,7 +50,7 @@ export const hostApiServices = createApi({
         method: 'GET',
       }),
     }),
-    // Auth POST Call
+    // New Registration
     newUsersRegister: builder.mutation({
       query: data => ({
         url: '/Auth',
@@ -70,6 +70,18 @@ export const hostApiServices = createApi({
         };
       },
     }),
+    // Profile Update
+    profileUpdate: builder.mutation({
+      query: ({data, params}) => {
+        // console.log('paylod', data, params);
+
+        return {
+          url: `/Auth/${data?.id}`,
+          method: 'PUT',
+          body: params,
+        };
+      },
+    }),
   }),
 });
 
@@ -81,4 +93,5 @@ export const {
   useLazyAuthUsersQuery,
   useNewUsersRegisterMutation,
   useLazyProfileDataQuery,
+  useProfileUpdateMutation,
 } = hostApiServices;

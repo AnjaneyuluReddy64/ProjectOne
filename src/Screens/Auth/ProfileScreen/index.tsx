@@ -12,9 +12,14 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useLazyProfileDataQuery} from '../../../APIServices/hostApiServices';
+import {
+  useLazyProfileDataQuery,
+  useProfileUpdateMutation,
+} from '../../../APIServices/hostApiServices';
 import {COLORS} from '../../../Utils/Colors';
 import CommonHeader from '../../../Components/CommonHeader';
+import {InputField, ReadOnlyField} from '../../../Components/InputComponent';
+import {showErrorMessage, showSuccessMessage} from '../../../Utils/Globals';
 
 const ProfileScreen = ({route, navigation}: {route: any; navigation: any}) => {
   const {userData} = route?.params || {};
@@ -22,8 +27,6 @@ const ProfileScreen = ({route, navigation}: {route: any; navigation: any}) => {
   const [profileData, setProfileData] = useState<any>({});
 
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-
-  console.log('isEditMode---->', isEditMode);
 
   const [profileApi] = useLazyProfileDataQuery();
 
@@ -36,6 +39,8 @@ const ProfileScreen = ({route, navigation}: {route: any; navigation: any}) => {
       const response = await profileApi(data).unwrap();
       if (response) {
         setProfileData(response);
+        // setNameValue(response?.name);
+        // setMobileNumer(response?.mobile);
       }
     } catch (error) {
       console.log('profile API error---->', error);
@@ -52,23 +57,92 @@ const ProfileScreen = ({route, navigation}: {route: any; navigation: any}) => {
 
   //editProfile
 
+  const [nameValue, setNameValue] = useState('');
+  const [mobileNumber, setMobileNumer] = useState('');
+
+  useEffect(() => {
+    setNameValue(profileData?.name || '');
+    setMobileNumer(profileData?.mobile || '');
+  }, [profileData]);
+
+  // console.log('nameValue-->', nameValue);
+  const [updateProfile] = useProfileUpdateMutation();
+
+  const onUpdateHandler = async () => {
+    try {
+      const data = {
+        id: profileData?.id || '',
+      };
+      const params = {
+        name: nameValue || '',
+        mobile: mobileNumber || '',
+      };
+
+      const response = await updateProfile({data, params}).unwrap();
+      // console.log('response---->', response);
+
+      if (response) {
+        showSuccessMessage({
+          message: 'Profile updated suceesfully',
+          duration: 4000,
+        });
+
+        profileHandler();
+        setIsEditMode(false);
+      } else {
+        showErrorMessage({message: 'Profile update failed', duration: 4000});
+      }
+    } catch (error) {
+      console.log('error---->', error);
+    }
+  };
   return (
     <View style={styles.container}>
       <CommonHeader title={'Bio-Data'} />
       <View style={styles.bodyContainer}>
         <View style={styles.dpImgContainer}>
-          <Image
-            source={{uri: profileData?.photo}}
-            style={styles.profileImage}
-          />
-          <Text style={styles.name}>{profileData?.name}</Text>
+          <>
+            {profileData?.photo && (
+              <Image
+                source={{uri: profileData?.photo || ''}}
+                style={styles.profileImage}
+              />
+            )}
+          </>
+
+          <Text style={styles.email}>Email: {profileData?.gmail}</Text>
         </View>
 
         <View>
-          <Text style={styles.email}>Email: {profileData?.gmail}</Text>
-          <Text style={styles.email}>Password: {profileData?.password}</Text>
-          <Text style={styles.mobile}>Mobile: {profileData?.mobile}</Text>
-          <Text style={styles.id}>ID: {profileData?.id}</Text>
+          <>
+            {isEditMode ? (
+              <InputField
+                headerString="Name"
+                inputValue={nameValue}
+                setInputValue={(text: string) => {
+                  setNameValue(text);
+                }}
+              />
+            ) : (
+              <ReadOnlyField headerString="Name" value={profileData?.name} />
+            )}
+          </>
+          <>
+            {isEditMode ? (
+              <InputField
+                headerString="Mobile Number"
+                inputValue={mobileNumber}
+                setInputValue={(num: string) => {
+                  setMobileNumer(num);
+                }}
+              />
+            ) : (
+              <ReadOnlyField
+                headerString="Mobile Number"
+                value={profileData?.mobile}
+              />
+            )}
+          </>
         </View>
 
         {/* Buttons */}
@@ -76,7 +150,7 @@ const ProfileScreen = ({route, navigation}: {route: any; navigation: any}) => {
           {isEditMode ? (
             <TouchableOpacity
               style={styles.button}
-              onPress={() => setIsEditMode(false)}>
+              onPress={() => onUpdateHandler()}>
               <Text style={styles.buttonText}>Update Profile</Text>
             </TouchableOpacity>
           ) : (
