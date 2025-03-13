@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  Button,
   TouchableOpacity,
   Alert,
 } from 'react-native';
@@ -25,9 +24,9 @@ const ProfileScreen = ({route, navigation}: {route: any; navigation: any}) => {
   const {userData} = route?.params || {};
 
   const [profileData, setProfileData] = useState<any>({});
-
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-
+  const [nameValue, setNameValue] = useState('');
+  const [mobileNumber, setMobileNumer] = useState('');
   const [profileApi] = useLazyProfileDataQuery();
 
   const profileHandler = async () => {
@@ -39,8 +38,6 @@ const ProfileScreen = ({route, navigation}: {route: any; navigation: any}) => {
       const response = await profileApi(data).unwrap();
       if (response) {
         setProfileData(response);
-        // setNameValue(response?.name);
-        // setMobileNumer(response?.mobile);
       }
     } catch (error) {
       console.log('profile API error---->', error);
@@ -57,15 +54,11 @@ const ProfileScreen = ({route, navigation}: {route: any; navigation: any}) => {
 
   //editProfile
 
-  const [nameValue, setNameValue] = useState('');
-  const [mobileNumber, setMobileNumer] = useState('');
-
   useEffect(() => {
     setNameValue(profileData?.name || '');
     setMobileNumer(profileData?.mobile || '');
   }, [profileData]);
 
-  // console.log('nameValue-->', nameValue);
   const [updateProfile] = useProfileUpdateMutation();
 
   const onUpdateHandler = async () => {
@@ -96,9 +89,12 @@ const ProfileScreen = ({route, navigation}: {route: any; navigation: any}) => {
       console.log('error---->', error);
     }
   };
+  const onChangePasswordHandler = () => {
+    navigation.navigate('ChangePassword', {userData});
+  };
   return (
     <View style={styles.container}>
-      <CommonHeader title={'Bio-Data'} />
+      <CommonHeader title={'Profile'} />
       <View style={styles.bodyContainer}>
         <View style={styles.dpImgContainer}>
           <>
@@ -160,6 +156,13 @@ const ProfileScreen = ({route, navigation}: {route: any; navigation: any}) => {
               <Text style={styles.buttonText}>Edit Profile</Text>
             </TouchableOpacity>
           )}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              onChangePasswordHandler();
+            }}>
+            <Text style={styles.buttonText}>Change Password</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

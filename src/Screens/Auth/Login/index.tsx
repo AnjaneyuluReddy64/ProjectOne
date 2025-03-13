@@ -17,6 +17,8 @@ import {useLazyAuthUsersQuery} from '../../../APIServices/hostApiServices';
 const Login = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState('');
   const [password, setpassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const [getUsersAPI, usersData] = useLazyAuthUsersQuery();
 
   const onLoginHandler = async () => {
@@ -25,6 +27,7 @@ const Login = ({navigation}: {navigation: any}) => {
     } else if (!password.trim()) {
       Alert.alert('Enter password');
     } else {
+      setLoading(true);
       try {
         const response = await getUsersAPI({}).unwrap();
 
@@ -39,13 +42,8 @@ const Login = ({navigation}: {navigation: any}) => {
         );
 
         if (currentUser) {
-          //isValidUser
-          const userData = usersData;
           navigation?.navigate('Home', {
-            // username: username || 'defaultUsername',
-            // password: password || 'defaultPassword',
             userData: currentUser || 'Nouser',
-            // userData: userData.find(user => user.gmail === username) || {},
           });
           // setUsername('');
           // setpassword('');
@@ -54,6 +52,8 @@ const Login = ({navigation}: {navigation: any}) => {
         }
       } catch (err) {
         Alert.alert('Login Error', 'Unable to login. Please try again later.');
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -92,8 +92,13 @@ const Login = ({navigation}: {navigation: any}) => {
           placeholder="Enter Password"
           secureTextEntry
         />
-        <TouchableOpacity style={styles.button} onPress={onLoginHandler}>
-          <Text style={styles.buttonText}>Login</Text>
+        <TouchableOpacity
+          disabled={loading}
+          style={styles.button}
+          onPress={onLoginHandler}>
+          <Text style={styles.buttonText}>
+            {loading ? 'Loading....' : 'Login'}
+          </Text>
         </TouchableOpacity>
       </View>
 

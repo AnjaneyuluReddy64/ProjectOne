@@ -45,8 +45,11 @@ const CommonHeader = ({
 
         <Text>{title ? title : ''}</Text>
 
-        <TouchableOpacity onPress={() => {}}>
-          <Text>Cart</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Login');
+          }}>
+          <Text>Logout</Text>
         </TouchableOpacity>
       </View>
     </View>

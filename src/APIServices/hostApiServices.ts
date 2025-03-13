@@ -82,6 +82,17 @@ export const hostApiServices = createApi({
         };
       },
     }),
+
+    // Change Password
+    changePassword: builder.mutation({
+      query: ({data, params}) => {
+        return {
+          url: `/Auth/${data?.id}`,
+          method: 'PUT',
+          body: params,
+        };
+      },
+    }),
   }),
 });
 
@@ -94,4 +105,5 @@ export const {
   useNewUsersRegisterMutation,
   useLazyProfileDataQuery,
   useProfileUpdateMutation,
+  useChangePasswordMutation,
 } = hostApiServices;

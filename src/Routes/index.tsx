@@ -11,6 +11,7 @@ import ResetPassword from '../Screens/Auth/ResetPassword';
 import EnterOtp from '../Screens/Auth/EnterOtp';
 import OtpComponent from '../Screens/Auth/OtpComponent';
 import ProfileScreen from '../Screens/Auth/ProfileScreen';
+import ChangePassword from '../Screens/ChangePassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ const Routes = () => {
         {/* Main Screen */}
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="ChangePassword" component={ChangePassword} />
       </Stack.Navigator>
     </NavigationContainer>
   );
