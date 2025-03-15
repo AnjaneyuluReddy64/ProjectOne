@@ -13,9 +13,13 @@ import {useNavigation} from '@react-navigation/native';
 const CommonHeader = ({
   title,
   disableBack,
+  rightTitle,
+  onRightPress,
 }: {
   title: string;
   disableBack?: boolean;
+  rightTitle?: string;
+  onRightPress?: () => void;
 }) => {
   const navigation = useNavigation();
   return (
@@ -45,11 +49,8 @@ const CommonHeader = ({
 
         <Text>{title ? title : ''}</Text>
 
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Login');
-          }}>
-          <Text>Logout</Text>
+        <TouchableOpacity onPress={onRightPress}>
+          <Text> {rightTitle ? rightTitle : ''}</Text>
         </TouchableOpacity>
       </View>
     </View>

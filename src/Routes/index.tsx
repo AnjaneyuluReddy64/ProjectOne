@@ -12,6 +12,10 @@ import EnterOtp from '../Screens/Auth/EnterOtp';
 import OtpComponent from '../Screens/Auth/OtpComponent';
 import ProfileScreen from '../Screens/Auth/ProfileScreen';
 import ChangePassword from '../Screens/ChangePassword';
+import Cards from '../Screens/Project/Cards';
+import CardInfo from '../Screens/Project/CardInfo';
+import BuyNow from '../Screens/Project/BuyNow';
+import Cart from '../Screens/Project/Cart';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +32,10 @@ const Routes = () => {
         <Stack.Screen name="EnterOtp" component={EnterOtp} />
         <Stack.Screen name="OtpComponent" component={OtpComponent} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="Cards" component={Cards} />
+        <Stack.Screen name="CardInfo" component={CardInfo} />
+        <Stack.Screen name="BuyNow" component={BuyNow} />
+        <Stack.Screen name="Cart" component={Cart} />
 
         {/* Main Screen */}
         <Stack.Screen name="Home" component={Home} />
