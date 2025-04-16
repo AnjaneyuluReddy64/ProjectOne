@@ -1,121 +1,41 @@
-// import React, {useState, useRef, useEffect} from 'react';
-// import {View, Text, TextInput, StyleSheet} from 'react-native';
-// import {
-//   heightPercentageToDP as hp,
-//   widthPercentageToDP as wp,
-// } from 'react-native-responsive-screen';
-// const OTPInput = ({onComplete}) => {
-//   const length = 4;
-//   const [otp, setOtp] = useState(new Array(length).fill(''));
-//   const [timer, setTimer] = useState(60); // 1-minute timer
-//   const inputRefs = useRef([]);
-
-//   useEffect(() => {
-//     const countdown = setInterval(() => {
-//       setTimer(prevTimer => (prevTimer > 0 ? prevTimer - 1 : 0));
-//     }, 1000);
-
-//     return () => clearInterval(countdown); // Clean up the interval on component unmount
-//   }, []);
-
-//   const handleChange = (text, index) => {
-//     if (/^\d$/.test(text)) {
-//       const newOtp = [...otp];
-//       newOtp[index] = text;
-//       setOtp(newOtp);
-
-//       // Move to the next input field automatically
-//       if (text && index < length - 1) {
-//         inputRefs.current[index + 1].focus();
-//       }
-
-//       // Check if all OTP inputs are filled
-//       if (newOtp.join('').length === length) {
-//         onComplete(newOtp.join(''));
-//       }
-//     }
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <View>
-//         <Text style={styles.timerText}>Time left: {timer} seconds</Text>
-//       </View>
-//       <View style={{flexDirection: 'row'}}>
-//         {otp.map((digit, index) => (
-//           <TextInput
-//             key={index}
-//             value={digit}
-//             onChangeText={text => handleChange(text, index)}
-//             keyboardType="numeric"
-//             maxLength={1}
-//             style={styles.input}
-//             ref={ref => (inputRefs.current[index] = ref)}
-//           />
-//         ))}
-//       </View>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     margin: 20,
-//   },
-//   timerText: {
-//     fontSize: 16,
-//     marginBottom: 20,
-//   },
-//   input: {
-//     borderWidth: 1,
-//     borderRadius: hp('1%'),
-//     borderColor: '#000',
-//     padding: 10,
-//     margin: 5,
-//     textAlign: 'center',
-//     fontSize: 18,
-//     width: 40,
-//     height: 40,
-//   },
-// });
-
-// export default OTPInput;
-
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-// Define the parameter list type
-type RootStackParamList = {
-  OtpComponent: {
-    onComplete?: (otp: string) => void;
-  };
-};
-
-// Define the props type for the component
-type Props = NativeStackScreenProps<RootStackParamList, 'OtpComponent'>;
-
-const OTPInput: React.FC<Props> = ({navigation, route}) => {
+const OTPInput = ({navigation, route}: {navigation: any; route: any}) => {
   const length = 4;
   const [otp, setOtp] = useState(new Array(length).fill(''));
-  const [timer, setTimer] = useState(60); // 1-minute timer
+  // console.log(new Array(length).fill(''));
+
+  const [timer, setTimer] = useState(60);
+
   const inputRefs = useRef<Array<TextInput | null>>([]);
+
+  const [canResend, setCanResend] = useState(false);
 
   useEffect(() => {
     const countdown = setInterval(() => {
-      setTimer(prevTimer => (prevTimer > 0 ? prevTimer - 1 : 0));
+      setTimer(prevTimer => {
+        if (prevTimer <= 1) {
+          setCanResend(true);
+        }
+        return prevTimer > 0 ? prevTimer - 1 : 0;
+      });
     }, 1000);
 
     return () => clearInterval(countdown);
   }, []);
 
-  const handleChange = (text: string, index: number) => {
+  const handleChange = (text, index) => {
     if (/^\d$/.test(text)) {
       const newOtp = [...otp];
       newOtp[index] = text;
@@ -123,7 +43,7 @@ const OTPInput: React.FC<Props> = ({navigation, route}) => {
 
       // Move to the next input field automatically
       if (text && index < length - 1) {
-        inputRefs.current[index + 1]?.focus();
+        inputRefs.current[index + 1].focus();
       }
 
       // Check if all OTP inputs are filled
@@ -132,13 +52,25 @@ const OTPInput: React.FC<Props> = ({navigation, route}) => {
       }
     }
   };
+  const handleResendOTP = () => {
+    if (canResend) {
+      // Reset timer
+      setTimer(60);
+      setCanResend(false);
+      // Add your OTP resend API call here
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.timerText}>Time left: {timer} seconds</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>OTP verification</Text>
+        <Text style={styles.subtitle}>
+          Enter the OTP sent to your mobile number
+        </Text>
       </View>
-      <View style={{flexDirection: 'row'}}>
+
+      <View style={styles.otpContainer}>
         {otp.map((digit, index) => (
           <TextInput
             key={index}
@@ -151,31 +83,121 @@ const OTPInput: React.FC<Props> = ({navigation, route}) => {
           />
         ))}
       </View>
+
+      <View style={styles.resendContainer}>
+        <Text style={styles.resendText}>Didn’t receive code?</Text>
+        <TouchableOpacity onPress={handleResendOTP} disabled={!canResend}>
+          <Text
+            style={[
+              styles.resendButton,
+              !canResend && styles.resendButtonDisabled,
+            ]}>
+            Resend
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <Text style={styles.timerText}>Time left: {timer} seconds</Text>
+      </View>
+
+      <TouchableOpacity
+        style={styles.submitButton}
+        onPress={() => {
+          // if (otp.join('').length === length) {
+          //   route.params?.onComplete?.(otp.join(''));
+          // }
+          navigation.navigate('Home');
+        }}>
+        <Text style={styles.submitButtonText}>Submit</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.changeNumberButton}
+        onPress={() => navigation.goBack()}>
+        <Text style={styles.changeNumberText}>Want to Change Number ?</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
+export default OTPInput;
+
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 20,
+    padding: wp('5%'),
+    backgroundColor: '#FFFFFF',
+  },
+  headerContainer: {
+    alignItems: 'center',
+    marginBottom: hp('3%'),
+  },
+  title: {
+    color: '#101010',
+    fontSize: wp('5%'),
+    fontWeight: 'bold',
+    marginBottom: hp('1%'),
+  },
+  subtitle: {
+    fontSize: wp('4%'),
+    color: '#878787',
   },
   timerText: {
-    fontSize: 16,
-    marginBottom: 20,
+    fontSize: wp('4%'),
+    marginBottom: hp('2%'),
+    color: '#333',
+  },
+  otpContainer: {
+    flexDirection: 'row',
+    marginBottom: hp('3%'),
   },
   input: {
     borderWidth: 1,
     borderRadius: hp('1%'),
     borderColor: '#000',
-    padding: 10,
-    margin: 5,
+    padding: wp('2%'),
+    margin: wp('1%'),
     textAlign: 'center',
-    fontSize: 18,
-    width: 40,
-    height: 40,
+    fontSize: wp('5%'),
+    width: wp('12%'),
+    height: wp('12%'),
+  },
+  resendContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: hp('2%'),
+  },
+  resendText: {
+    fontSize: wp('4%'),
+    color: '#878787',
+    paddingRight: wp('2%'),
+  },
+  resendButton: {
+    color: '#FE8C00',
+    fontSize: wp('4%'),
+  },
+  resendButtonDisabled: {
+    color: '#999',
+  },
+  changeNumberButton: {
+    marginBottom: hp('2%'),
+  },
+
+  submitButton: {
+    backgroundColor: '#FE8C00',
+    paddingVertical: hp('1.5%'),
+    paddingHorizontal: wp('25%'),
+    borderRadius: hp('3%'),
+  },
+  submitButtonText: {
+    color: '#FFFFFF',
+    fontSize: wp('4%'),
+    fontWeight: 'bold',
+  },
+  changeNumberText: {
+    color: '#007AFF',
+    fontSize: wp('4%'),
+    paddingVertical: hp('1.5%'),
   },
 });
-
-export default OTPInput;

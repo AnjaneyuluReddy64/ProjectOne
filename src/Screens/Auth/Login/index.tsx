@@ -31,11 +31,6 @@ const Login = ({navigation}: {navigation: any}) => {
       try {
         const response = await getUsersAPI({}).unwrap();
 
-        // const isValidUser = response?.some(
-        //   (user: any) =>
-        //     user?.gmail === username && user?.password === password,
-        // );
-
         const currentUser = response?.find(
           (user: any) =>
             user?.gmail === username && user?.password === password,
@@ -58,32 +53,30 @@ const Login = ({navigation}: {navigation: any}) => {
     }
   };
 
-  const signupHandler = () => {
-    navigation.navigate('SignUp');
-  };
-  const forgetHandler = () => {
-    navigation.navigate('ForgetPassword');
-  };
+  // const signupHandler = () => {
+  //   navigation.navigate('SignUp');
+  // };
+  // const forgetHandler = () => {
+  //   navigation.navigate('ForgetPassword');
+  // };
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={[styles.titleText, {fontSize: hp('2%')}]}>Login</Text>
-        <Text style={styles.paraText}>
-          We are happy to see you again. Login to continue
-        </Text>
+        <Text style={[styles.titleText]}>Login</Text>
+        <Text style={styles.paraText}>Please sign in to your Phone</Text>
       </View>
 
-      <View>
-        <Text style={styles.label}>EMAIL ID</Text>
+      <View style={{marginVertical: hp('13%')}}>
+        <Text style={styles.label}>Phone Number</Text>
 
         <TextInput
           style={styles.input}
           value={username}
           onChangeText={setUsername}
-          placeholder="Enter Email"
+          placeholder="Enter Mobile Number"
         />
-        <Text style={styles.label}>PASSWORD</Text>
+        {/* <Text style={styles.label}>PASSWORD</Text>
 
         <TextInput
           style={styles.input}
@@ -91,18 +84,27 @@ const Login = ({navigation}: {navigation: any}) => {
           onChangeText={setpassword}
           placeholder="Enter Password"
           secureTextEntry
-        />
+        /> */}
+        {/* <TouchableOpacity
+          disabled={loading}
+          style={styles.button}
+          onPress={() => navigation.navigate('OtpComponent')}>
+          <Text style={styles.buttonText}>
+            {loading ? 'Loading....' : 'Login'}
+          </Text>
+        </TouchableOpacity> */}
+      </View>
+      <View>
         <TouchableOpacity
           disabled={loading}
           style={styles.button}
-          onPress={onLoginHandler}>
+          onPress={() => navigation.navigate('OtpComponent')}>
           <Text style={styles.buttonText}>
             {loading ? 'Loading....' : 'Login'}
           </Text>
         </TouchableOpacity>
       </View>
-
-      <View>
+      {/* <View>
         <View style={styles.bottomText}>
           <TouchableOpacity onPress={signupHandler}>
             <Text style={{color: '#00C7FE', textAlign: 'center'}}>Signup</Text>
@@ -114,7 +116,7 @@ const Login = ({navigation}: {navigation: any}) => {
             Forgot Password?
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -124,24 +126,25 @@ export default Login;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     padding: hp('2.3%'),
   },
   titleContainer: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   titleText: {
-    fontSize: hp('4'),
+    fontSize: hp('3%'),
     fontWeight: 'bold',
-    color: COLORS.DarkMidnightBlue,
+    color: '#101010',
   },
   paraText: {
     marginVertical: hp('2%'),
-    textAlign: 'center',
+    textAlign: 'left',
+    color: '#878787',
     width: wp('55%'),
   },
   label: {
-    color: COLORS.VividSkyBlue,
+    color: '#101010',
     fontSize: hp('2%'),
     marginBottom: hp('1%'),
   },
@@ -154,10 +157,10 @@ const styles = StyleSheet.create({
     paddingLeft: hp('2%'),
   },
   button: {
-    backgroundColor: COLORS.DarkMidnightBlue,
+    backgroundColor: '#FE8C00',
     color: 'white',
     textAlign: 'center',
-    borderRadius: hp('1%'),
+    borderRadius: hp('2%'),
     height: hp('5%'),
     marginBottom: hp('3%'),
   },

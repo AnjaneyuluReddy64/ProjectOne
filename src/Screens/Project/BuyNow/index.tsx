@@ -7,7 +7,7 @@ const BuyNow = ({route, navigation}: {route: any; navigation: any}) => {
 
   return (
     <View>
-      <CommonHeader title="Buy Now" />
+      <CommonHeader title="Buy Now" rightTitle="Nothng" />
     </View>
   );
 };

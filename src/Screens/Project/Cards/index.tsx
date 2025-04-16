@@ -17,7 +17,7 @@ import {styles} from './styles';
 import {cardDummyData} from '../../../APIServices/dummyApis';
 
 const Cards = ({navigation, cartData}: {navigation: any; cartData: any}) => {
-  console.log(cartData);
+  // console.log(cartData);
 
   const {FONT_SIZE} = useFont();
   const cardInfoHandler = (item: any) => {
@@ -33,7 +33,7 @@ const Cards = ({navigation, cartData}: {navigation: any; cartData: any}) => {
           {/* imageContainer */}
           <View style={styles.imageContainer}>
             <Image
-              source={{uri: item.imageUrl || ''}}
+              source={{uri: item.img || ''}}
               style={styles.productImage}
               resizeMode="contain"
             />

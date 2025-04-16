@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../Screens/Home';
 import Profile from '../Screens/Profile';
 import Splash from '../Screens/Auth/Splash';
@@ -18,12 +19,18 @@ import BuyNow from '../Screens/Project/BuyNow';
 import Cart from '../Screens/Project/Cart';
 
 const Stack = createNativeStackNavigator();
+// const BottomTab = createBottomTabNavigator();
 
 const Routes = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         {/* Auth Screen */}
+
+        {/* <Stack.Screen
+          name="DrawerDrawerNavigator"
+          component={BottomNavigator}
+        /> */}
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUp" component={SignUp} />
@@ -45,5 +52,16 @@ const Routes = () => {
     </NavigationContainer>
   );
 };
+
+// const BottomNavigator = () => {
+//   return (
+//     <BottomTab.Navigator>
+//       <BottomTab.Screen name="Home" component={Home} />
+//       <BottomTab.Screen name="Post" component={Post} />
+//       <BottomTab.Screen name="Profile" component={Profile} />
+//       <BottomTab.Screen name="Settings" component={Settings} />
+//     </BottomTab.Navigator>
+//   );
+// };
 
 export default Routes;

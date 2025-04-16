@@ -18,6 +18,7 @@ import CommonHeader from '../../../Components/CommonHeader';
 
 const CardInfo = ({route, navigation}: {route: any; navigation: any}) => {
   const {itemData} = route.params;
+  // console.log('========', itemData);
 
   const {FONT_SIZE} = useFont();
   const onBuyNowHandler = (itemData: any) => {
@@ -27,7 +28,7 @@ const CardInfo = ({route, navigation}: {route: any; navigation: any}) => {
   const [cartData, setCartData] = useState<any | []>([]);
 
   useEffect(() => {
-    console.log('cartData--->', cartData?.length);
+    // console.log('cartData--->', cartData?.length);
   }, [cartData]);
 
   const onAddToCart = () => {
@@ -49,7 +50,7 @@ const CardInfo = ({route, navigation}: {route: any; navigation: any}) => {
         {/* Image Section */}
         <View style={styles.imageContainer}>
           <Image
-            source={{uri: itemData.imageUrl}}
+            source={{uri: itemData.img}}
             style={styles.productImage}
             resizeMode="contain"
           />
@@ -65,13 +66,13 @@ const CardInfo = ({route, navigation}: {route: any; navigation: any}) => {
           {/* Rating */}
           <View style={styles.ratingContainer}>
             <View style={styles.ratingBox}>
-              <Text style={styles.ratingText}>★ {itemData.ratingNo}/5</Text>
+              <Text style={styles.ratingText}>★ {itemData.rating}/5</Text>
             </View>
           </View>
 
           {/* Price Section */}
           <View style={styles.priceContainer}>
-            <Text style={styles.offerPrice}>₹{itemData.price.offerPrice}</Text>
+            <Text style={styles.offerPrice}>₹{itemData.price}</Text>
             <Text style={styles.actualPrice}>
               ₹{itemData.price.actualPrice}
             </Text>
@@ -83,7 +84,7 @@ const CardInfo = ({route, navigation}: {route: any; navigation: any}) => {
           {/* Delivery and Warranty */}
           <View style={styles.deliveryContainer}>
             <Text style={styles.deliveryText}>
-              Delivery by {itemData.dateOfDelivery}
+              Distance by {itemData.distance}
             </Text>
             <Text style={styles.warrantyText}>{itemData.warranty}</Text>
           </View>
